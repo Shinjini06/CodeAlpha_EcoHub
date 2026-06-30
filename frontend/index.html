@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EcoHub - Sustainable Living</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-wrapper">
+            <div class="logo">ECOHUB</div>
+            <div class="nav-center">
+                <a href="#" onclick="showShop(); return false;" class="nav-item">SHOP</a>
+                <a href="#" onclick="showOrders(); return false;" class="nav-item">ORDERS</a>
+            </div>
+            <div class="nav-right">
+                <span id="cartBadge" class="cart-badge" onclick="showCart()" style="display:none;">CART</span>
+                <button id="logoutBtn" class="btn-nav" onclick="logout()" style="display:none;">LOGOUT</button>
+                <button id="loginBtn" class="btn-nav btn-login" onclick="showAuthSection()">LOGIN</button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="main-container">
+        <div id="authPage" class="page">
+            <div id="loginForm" class="auth-layout">
+                <div class="auth-left">
+                    <h1>WELCOME BACK</h1>
+                    <p class="subtitle">Sustainable choices for a better tomorrow.</p>
+                    <p class="tagline">Your path to eco-friendly living starts here.</p>
+                </div>
+                <div class="auth-right">
+                    <div class="auth-box">
+                        <h2>SIGN IN</h2>
+                        <form onsubmit="handleLogin(event)">
+                            <div class="form-group">
+                                <label>EMAIL</label>
+                                <input type="email" id="loginEmail" placeholder="your@email.com" required>
+                            </div>
+                            <div class="form-group">
+                                <label>PASSWORD</label>
+                                <input type="password" id="loginPassword" placeholder="••••••••" required>
+                            </div>
+                            <button type="submit" class="btn-submit">SIGN IN →</button>
+                        </form>
+                        <p class="form-toggle">Don't have an account? <a href="#" onclick="switchToSignup(); return false;">Register here →</a></p>
+                        <div id="loginError" class="error-msg"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="signupForm" class="auth-layout" style="display:none;">
+                <div class="auth-left">
+                    <h1>JOIN US</h1>
+                    <p class="subtitle">Create your account and start your eco journey.</p>
+                    <p class="tagline">Become part of a sustainable community.</p>
+                </div>
+                <div class="auth-right">
+                    <div class="auth-box">
+                        <h2>CREATE ACCOUNT</h2>
+                        <form onsubmit="handleSignup(event)">
+                            <div class="form-group">
+                                <label>FULL NAME</label>
+                                <input type="text" id="signupName" placeholder="Your full name" required>
+                            </div>
+                            <div class="form-group">
+                                <label>EMAIL</label>
+                                <input type="email" id="signupEmail" placeholder="your@email.com" required>
+                            </div>
+                            <div class="form-group">
+                                <label>PASSWORD</label>
+                                <input type="password" id="signupPassword" placeholder="••••••••" required>
+                            </div>
+                            <div class="form-group">
+                                <label>CONFIRM PASSWORD</label>
+                                <input type="password" id="signupConfirm" placeholder="••••••••" required>
+                            </div>
+                            <button type="submit" class="btn-submit">CREATE ACCOUNT →</button>
+                        </form>
+                        <p class="form-toggle">Already have an account? <a href="#" onclick="switchToLogin(); return false;">Sign in →</a></p>
+                        <div id="signupError" class="error-msg"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="shopPage" class="page" style="display:none;">
+            <div class="shop-hero">
+                <div class="hero-left">
+                    <h1>SUSTAINABLE PRODUCTS</h1>
+                    <p>Carefully curated eco-friendly choices for conscious living.</p>
+                </div>
+                <div class="hero-right">
+                    <p class="hero-stat">100% ECO-FRIENDLY</p>
+                </div>
+            </div>
+            <div id="productsList" class="products-container"></div>
+        </div>
+
+        <div id="cartPage" class="page" style="display:none;">
+            <h1 class="page-title">YOUR CART</h1>
+            <div class="cart-layout">
+                <div class="cart-left">
+                    <div id="cartItemsList" class="cart-items"></div>
+                </div>
+                <div class="cart-right">
+                    <div class="cart-summary-box">
+                        <h3>ORDER SUMMARY</h3>
+                        <div class="summary-line">
+                            <span>Subtotal</span>
+                            <span>$<span id="subtotal">0.00</span></span>
+                        </div>
+                        <div class="summary-line">
+                            <span>Shipping</span>
+                            <span>$5.00</span>
+                        </div>
+                        <div class="summary-line total">
+                            <span>TOTAL</span>
+                            <span>$<span id="cartTotal">5.00</span></span>
+                        </div>
+                        <div id="checkoutForm" style="display:none; margin-top:2rem; border-top:1px solid #ccc; padding-top:2rem;">
+                            <h4>SHIPPING ADDRESS</h4>
+                            <input type="text" id="shippingAddress" placeholder="Full Address" required>
+                            <input type="text" id="shippingCity" placeholder="City" required>
+                            <button onclick="handleCheckout()" class="btn-checkout">PLACE ORDER →</button>
+                        </div>
+                        <button id="checkoutBtn" onclick="showCheckoutForm()" class="btn-checkout" style="display:none;">PROCEED TO CHECKOUT →</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="ordersPage" class="page" style="display:none;">
+            <h1 class="page-title">YOUR ORDERS</h1>
+            <div id="ordersList" class="orders-container"></div>
+        </div>
+    </div>
+
+    <div id="successModal" class="modal" style="display:none;">
+        <div class="modal-overlay" onclick="closeModal()"></div>
+        <div class="modal-box">
+            <h2>✓ ORDER CONFIRMED</h2>
+            <p id="modalMessage"></p>
+            <button onclick="closeModal()" class="btn-modal">CONTINUE SHOPPING →</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
